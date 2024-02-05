@@ -3,10 +3,14 @@ body {
   font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a{
+a {
   text-decoration: none;
 }
 
-li{
+li {
   list-style: none;
+}
+
+ul > * {
+  margin: 20px 0;
 }
