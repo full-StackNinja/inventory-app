@@ -16,7 +16,11 @@ html
               ul
                 li 
                   a(href="/catalog") Home
-
+              p #[strong Categories:]
+              ul
+                for category in categories_list
+                  li 
+                    a(href=`/catalog/category/${category._id}`) #{category.name}
                 hr
 
               ul
