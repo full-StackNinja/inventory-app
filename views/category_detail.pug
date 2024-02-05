@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1(style="margin-bottom:30px;") #{category.name}
+  p(style="margin-left:30px") #{category.description}
+
+  p(style="margin:30px 0;") Following items are available under #[strong #[em #{category.name}]] category:
+
+  if category_items.length
+    ul
+      for item in category_items
+        li
+          a(href=`/catalog/item/${item._id}`) #{item.name}
