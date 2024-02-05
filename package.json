@@ -1,0 +1,21 @@
+{
+  "name": "inventory-app",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "build": "nodemon start",
+    "devserver": "DEBUG=inventory-app:* npm run build"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "core-js": "^3.35.1",
+    "debug": "~2.6.9",
+    "express": "^4.18.2",
+    "http-errors": "~1.6.3",
+    "mongoose": "^8.1.1",
+    "morgan": "~1.9.1",
+    "nodemon": "^3.0.3",
+    "pug": "2.0.0-beta11"
+  }
+}
