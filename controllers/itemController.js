@@ -4,7 +4,8 @@ const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
 exports.item_detail = asyncHandler(async (req, res, next) => {
-  res.send("Not implemented item detail");
+  const item = await Item.findById(req.params.id).populate("category").exec();
+  res.render("item_detail", { item });
 });
 
 exports.item_create_get = asyncHandler(async (req, res, next) => {
