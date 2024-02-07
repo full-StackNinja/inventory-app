@@ -74,12 +74,49 @@ exports.category_create_post = [
 ];
 
 exports.category_update_get = asyncHandler(async (req, res, next) => {
-  res.send("Not implemented category update get");
+  const category = await Category.findById(req.params.id);
+  res.render("category_form", { title: "Update Category", category });
 });
 
-exports.category_update_post = asyncHandler(async (req, res, next) => {
-  res.send("Not Implemented category update post");
-});
+exports.category_update_post = [
+  body("name")
+    .trim()
+    .escape()
+    .customSanitizer((value) => {
+      return value.replace(/&#x27;/g, "'");
+    }),
+  body("description")
+    .trim()
+    .isLength({ min: 10 })
+    .withMessage("Description should be atleast 10 chars long")
+    .escape(),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const category = new Category({
+      name: req.body.name,
+      description: req.body.description,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      res.render("category_form", {
+        title: "Update Category",
+        category,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const updatedCategory = await Category.findByIdAndUpdate(
+        req.params.id,
+        category
+      );
+      console.log('updatedCat', updatedCategory)
+    
+      res.redirect(updatedCategory.url);
+    }
+  }),
+];
 
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
   res.send("Not implemented category delete get");
