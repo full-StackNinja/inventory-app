@@ -70,9 +70,12 @@ exports.item_update_post = [
 ];
 
 exports.item_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("Not Implemented item delete get");
+  const item = await Item.findById(req.params.id);
+
+  res.render("item_delete", { item });
 });
 
 exports.item_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("Not implemented item delete post");
+  await Item.findByIdAndDelete(req.params.id);
+  res.redirect("/");
 });
