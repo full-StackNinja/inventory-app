@@ -11,18 +11,18 @@ html
   body
     div(class="container-fluid")
       div(class='row')
-          div(class='col-sm-2')  
+          div(class='col-sm-2 sidebar')  
             block sidebar  
               ul
                 li 
                   a(href="/catalog") Home
+            if categories_list.length
               p #[strong Categories:]
-              ul
-                for category in categories_list
-                  li 
-                    a(href=`/catalog/category/${category._id}`) #{category.name}
-                hr
-
+                ul
+                  for category in categories_list
+                    li
+                      a(href=category.url) #{category.name}
+              hr
               ul
                 li
                   a(href="/catalog/category/create") Add new category
