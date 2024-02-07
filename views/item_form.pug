@@ -15,7 +15,7 @@ block content
           if category._id.toString() ===item.category._id.toString()
             option(value=category._id selected) #{category.name}
           else
-            option(value=category._id selected) #{category.name}
+            option(value=category._id) #{category.name}
         else
           option(value=category._id) #{category.name}
     label(for='stock') Stock:
