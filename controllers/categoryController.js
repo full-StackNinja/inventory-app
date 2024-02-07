@@ -111,17 +111,22 @@ exports.category_update_post = [
         req.params.id,
         category
       );
-      console.log('updatedCat', updatedCategory)
-    
+      console.log("updatedCat", updatedCategory);
+
       res.redirect(updatedCategory.url);
     }
   }),
 ];
 
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("Not implemented category delete get");
+  const [category, category_items] = await Promise.all([
+    Category.findById(req.params.id).exec(),
+    Item.find({ category: req.params.id }).exec(),
+  ]);
+  res.render("category_delete", { category_items, category });
 });
 
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("Not implemented category delete post");
+  await Category.findByIdAndDelete(req.params.id);
+  res.redirect("/");
 });
