@@ -34,10 +34,10 @@ exports.category_create_get = asyncHandler(async (req, res, next) => {
 exports.category_create_post = [
   body("name")
     .trim()
-    .not()
-    .isAlpha()
-    .withMessage("name should be alphabetical only")
-    .escape(),
+    .escape()
+    .customSanitizer((value) => {
+      return value.replace(/&#x27;/g, "'");
+    }),
   body("description")
     .trim()
     .isLength({ min: 10 })
