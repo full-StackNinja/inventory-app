@@ -11,3 +11,5 @@ block content
       for item in category_items
         li
           a(href=`/catalog/item/${item._id}`) #{item.name}
+  else
+    p(style='margin-left:30px') #[em No items available for this category!]
