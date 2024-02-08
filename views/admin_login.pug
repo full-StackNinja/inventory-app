@@ -1,0 +1,8 @@
+extends layout
+
+block content
+
+  form.form-group(method='post')
+    label(for='code') Enter admin code:
+    input#code.form-control(type='password' required name='code')
+    button.btn.btn-primary(type='submit') Update
