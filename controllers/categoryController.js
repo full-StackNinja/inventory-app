@@ -73,10 +73,12 @@ exports.category_create_post = [
   }),
 ];
 
-exports.category_update_get = asyncHandler(async (req, res, next) => {
-  const category = await Category.findById(req.params.id);
-  res.render("category_form", { title: "Update Category", category });
-});
+exports.category_update_get = [
+  asyncHandler(async (req, res, next) => {
+    const category = await Category.findById(req.params.id);
+    res.render("category_form", { title: "Update Category", category });
+  }),
+];
 
 exports.category_update_post = [
   body("name")
@@ -126,7 +128,17 @@ exports.category_delete_get = asyncHandler(async (req, res, next) => {
   res.render("category_delete", { category_items, category });
 });
 
-exports.category_delete_post = asyncHandler(async (req, res, next) => {
-  await Category.findByIdAndDelete(req.params.id);
-  res.redirect("/");
-});
+exports.category_delete_post = [
+  (req, res, next) => {
+    if (req.body.code === process.env.ADMIN_CODE) {
+      next();
+    } else {
+      const error = new Error("Authorization error!");
+      next(error);
+    }
+  },
+  asyncHandler(async (req, res, next) => {
+    await Category.findByIdAndDelete(req.params.id);
+    res.redirect("/");
+  }),
+];
