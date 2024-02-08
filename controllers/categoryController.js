@@ -73,27 +73,25 @@ exports.category_create_post = [
   }),
 ];
 
-exports.category_update_get = (req, res, next) => {
+exports.category_update_get = async (req, res, next) => {
   if (!req.session.isAdmin) {
     res.redirect(`/admin/login?from=${req.originalUrl}`);
   } else {
-    // req.session.isAdmin = false;
-    res.render("category_form", { title: "Update Category" });
+    const category = await Category.findById(req.params.id).exec();
+    res.render("category_form", { title: "Update Category", category });
   }
 };
 
 exports.category_update_post = [
   body("name")
     .trim()
-    .escape()
     .customSanitizer((value) => {
       return value.replace(/&#x27;/g, "'");
     }),
   body("description")
     .trim()
     .isLength({ min: 10 })
-    .withMessage("Description should be atleast 10 chars long")
-    .escape(),
+    .withMessage("Description should be atleast 10 chars long"),
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
