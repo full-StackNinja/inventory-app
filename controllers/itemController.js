@@ -45,15 +45,20 @@ exports.item_create_post = [
 ];
 
 exports.item_update_get = asyncHandler(async (req, res, next) => {
-  const [item, category_list] = await Promise.all([
-    Item.findById(req.params.id).exec(),
-    Category.find({}).sort({ name: 1 }).exec(),
-  ]);
-
-  res.render("item_form", { title: "Update Item", item, category_list });
+  if (1) {
+    const [item, category_list] = await Promise.all([
+      Item.findById(req.params.id).exec(),
+      Category.find({}).sort({ name: 1 }).exec(),
+    ]);
+    // req.session.isAdmin = false;
+    res.render("item_form", { title: "Update Item", item, category_list });
+  } else {
+    res.redirect(`/admin/login?from=${req.originalUrl}`);
+  }
 });
 
 exports.item_update_post = [
+  upload.single('image'),
   body("name").trim().escape(),
   body("category").not().isEmpty().withMessage("Category is required"),
   body("stock", "stock must be an integer value")
