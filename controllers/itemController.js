@@ -83,7 +83,17 @@ exports.item_delete_get = asyncHandler(async (req, res, next) => {
   res.render("item_delete", { item });
 });
 
-exports.item_delete_post = asyncHandler(async (req, res, next) => {
-  await Item.findByIdAndDelete(req.params.id);
-  res.redirect("/");
-});
+exports.item_delete_post = [
+  (req, res, next) => {
+    if (req.body.code === process.env.ADMIN_CODE) {
+      next();
+    } else {
+      const error = new Error("Authorization error!");
+      next(error);
+    }
+  },
+  asyncHandler(async (req, res, next) => {
+    await Item.findByIdAndDelete(req.params.id);
+    res.redirect("/");
+  }),
+];

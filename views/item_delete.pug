@@ -1,6 +1,7 @@
 extends layout
 block content
   h1= item.name
-  p #[em Do you really want to delete this item?]
-  form(method="post")
-    button.btn.btn-primary(type='submit') Submit
+  form.form-group(method='post')
+      label(for='code') Enter admin code:
+      input#code.form-control(type='password' required name='code')
+      button.btn.btn-primary(type='submit') Delete
