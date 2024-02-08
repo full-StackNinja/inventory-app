@@ -73,12 +73,14 @@ exports.category_create_post = [
   }),
 ];
 
-exports.category_update_get = [
-  asyncHandler(async (req, res, next) => {
-    const category = await Category.findById(req.params.id);
-    res.render("category_form", { title: "Update Category", category });
-  }),
-];
+exports.category_update_get = (req, res, next) => {
+  if (!req.session.isAdmin) {
+    res.redirect(`/admin/login?from=${req.originalUrl}`);
+  } else {
+    // req.session.isAdmin = false;
+    res.render("category_form", { title: "Update Category" });
+  }
+};
 
 exports.category_update_post = [
   body("name")
