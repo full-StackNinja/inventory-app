@@ -2,6 +2,17 @@ const Category = require("../models/Category");
 const Item = require("../models/Item");
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
+const multer = require("multer");
+const path = require("path");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.resolve(__dirname, "../public/images"));
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage });
 
 exports.item_detail = asyncHandler(async (req, res, next) => {
   const item = await Item.findById(req.params.id).populate("category").exec();
@@ -14,13 +25,10 @@ exports.item_create_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.item_create_post = [
+  upload.single("image"),
   body("name").trim().escape(),
   body("category").not().isEmpty().withMessage("Category is required"),
-  body("stock", "stock must be an integer value")
-    .trim()
-    .isInt()
-    .withMessage("Stock must be an integer")
-    .escape(),
+  body("stock").trim().isInt().withMessage("Stock must be an integer").escape(),
   body("price").trim().escape(),
   body("description").trim().escape(),
   asyncHandler(async (req, res, next) => {
