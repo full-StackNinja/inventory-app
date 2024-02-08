@@ -9,7 +9,7 @@ block content
     input#name.form-control(type='text' required name='name' value=(undefined===item?"": item.name))
     label(for='category') Category:
     select#category.form-select(required name='category') 
-      option(value="") "---Select Category---"
+      option(value="") Select Category
       for category in category_list
         if item
           if category._id.toString() ===item.category._id.toString()
